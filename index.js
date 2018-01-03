@@ -2,15 +2,31 @@
 let buildForm = (inputs) => {
 
   // Iterate through each input
-  inputs.map(buildInput);
+  inputs.map(inputFactory);
 }
 
 // Factory for building different input types
-let buildInput = (input) => {
-  console.log('Hello World! I am an input:', input.type);
+let inputFactory = (input) => {
+
+  // Currently accepted input types
+  let acceptedInputTypes = [
+    'text', 'email', 'password', 'hidden', 'reset', 'submit'
+  ];
+
+  // Check if input type is accepted or throw exception
+  if(input.type && acceptedInputTypes.includes(input.type)) {
+
+    let outputString = `<input type="${input.type}"`;
+    console.log(outputString);
+
+  } else {
+    console.log('INVALID');
+    // TODO: Throw invalid input type exception
+  }
 
 }
 
+// Dummy data, remove before production.
 let testFields = [
   {
     name: 'firstName',
@@ -21,11 +37,6 @@ let testFields = [
     name: 'lastName',
     type: 'text',
     label: 'Last Name'
-  },
-  {
-    name: 'firstName',
-    type: 'text',
-    label: 'First Name'
   },
   {
     name: 'email',
