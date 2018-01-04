@@ -1,17 +1,25 @@
 // Main function to build the complete form
-let buildForm = (inputs) => {
+let buildForm = (inputs, action = false, method = 'GET') => {
+
+  // Used to output final HTML
+  let outputString = `<form`
+
+  if(action) outputString += ` action="${action}"`;
+
+  outputString += ` method="${method}">`
 
   // Check if inputs variable is an array or throw exception
   if(inputs && Array.isArray(inputs)) {
 
     // Iterate through each input
-    let outputString = inputs.map(inputFactory).join('\n');
+    outputString += inputs.map(inputFactory).join('\n');
 
-    // Output inputs
-    console.log(outputString);
   } else {
     error('You must supply a valid array of inputs.', inputs); // Custom error method included
   }
+
+  outputString += '</form>';
+  console.log(outputString);
 }
 
 // Factory for building different input types
@@ -62,9 +70,7 @@ let buildSelect = (input) => {
 
     outputString += '</select>';
 
-    if(input.label) {
-      outputString = `<label>${input.label} ${outputString}</label>`;
-    }
+    if(input.label) outputString = `<label>${input.label} ${outputString}</label>`;
 
     outputString = `<p>${outputString}</p>`;
 
@@ -78,9 +84,7 @@ let buildSelect = (input) => {
 let buildOption = (option) => {
 
   // Check if value and label or throw exception
-  if(option.value && option.label) {
-    return `<option value="${option.value}">${option.label}</option>`;
-  }
+  if(option.value && option.label) return `<option value="${option.value}">${option.label}</option>`;
 
   error('The option elements require a value string and label string.', [option.value, option.label]);
 }
@@ -89,9 +93,7 @@ let buildOption = (option) => {
 let buildLabel = (input) => {
 
   // Check if value or throw exception
-  if(input.value) {
-    return `<p><label>${input.value}</label></p>`;
-  }
+  if(input.value) return `<p><label>${input.value}</label></p>`;
 
   error('The label inputs require a value string.', input.value);
 }
@@ -100,9 +102,7 @@ let buildLabel = (input) => {
 let buildInputButton = (input) => {
 
   // Check if value or throw exception
-  if(input.value) {
-    return `<input type="${input.type}" value="${input.value}" />`;
-  }
+  if(input.value) return `<input type="${input.type}" value="${input.value}" />`;
 
   error(`The ${input.type} inputs require a value string`, input.value);
 }
@@ -116,15 +116,11 @@ let buildInput = (input) => {
     // Builds a string to return
     let outputString = `<input type="${input.type}" name="${input.name}"`;
 
-    if(input.value) {
-      outputString += ` value="${input.value}"`;
-    }
+    if(input.value) outputString += ` value="${input.value}"`;
 
     outputString += ' />';
 
-    if(input.label) {
-      outputString = `<label>${input.label} ${outputString}</label>`;
-    }
+    if(input.label) outputString = `<label>${input.label} ${outputString}</label>`;
 
     return outputString;
   }
@@ -197,4 +193,4 @@ let testFields = [
     ]
   }
 ]
-buildForm(testFields);
+buildForm(testFields, 'luke.com');
