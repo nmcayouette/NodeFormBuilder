@@ -5,7 +5,9 @@ let buildForm = (inputs) => {
   if(inputs && Array.isArray(inputs)) {
 
     // Iterate through each input
-    inputs.map(inputFactory);
+    let outputString = inputs.map(inputFactory).join('');
+
+    console.log(outputString);
 
   } else {
 
@@ -26,33 +28,28 @@ let inputFactory = (input) => {
   // Check if input type is accepted or throw exception
   if(input.type && acceptedInputTypes.includes(input.type)) {
 
-    let outputString = "";
-
     // Route input types to correct build method
     switch(input.type) {
 
       case 'select':
-        outputString = buildSelect(input);
+        return buildSelect(input);
         break;
 
       case 'label':
-        outputString = buildLabel(input);
+        return buildLabel(input);
         break;
 
       case 'reset':
       case 'submit':
-        outputString = buildInputButton(input);
+        return buildInputButton(input);
         break;
 
       default:
-        outputString = buildInput(input);
+        return buildInput(input);
     }
-
-    console.log(outputString);
 
   } else {
 
-    console.log('INVALID');
     // TODO: Throw invalid input type exception
 
   }
@@ -61,12 +58,51 @@ let inputFactory = (input) => {
 
 // Builds a select element
 let buildSelect = (input) => {
-  // TODO
+
+  // Check if name and options array or throw exception
+  if(input.name && input.options && Array.isArray(input.options)) {
+
+    // Builds a string to return
+    let outputString = `<select name="${input.name}">`;
+
+    outputString += input.options.map(buildOption).join('');
+
+    outputString += '</select>';
+
+    if(input.label) {
+      outputString = `<label>${input.label} ${outputString}</label>`;
+    }
+
+    outputString = `<p>${outputString}</p>`;
+
+    return outputString;
+
+  }
+
+  // TODO: Thow error if no name
+
+}
+
+// Builds an option element
+let buildOption = (option) => {
+
+  // Check if value and label or throw exception
+  if(option.value && option.label) {
+    return `<option value="${option.value}">${option.label}</option>`;
+  }
+
+  // TODO: Thow error if no value or label
 }
 
 // Builds a label element
 let buildLabel = (input) => {
-  // TODO
+
+  // Check if value or throw exception
+  if(input.value) {
+    return `<p><label>${input.value}</label></p>`;
+  }
+
+  // TODO: Thow error if no value
 }
 
 // Builds an input button element
@@ -83,31 +119,30 @@ let buildInputButton = (input) => {
 // Builds an input element
 let buildInput = (input) => {
 
-  let outputString = `<input type="${input.type}"`;
   // Check if name or throw exception
   if(input.name) {
-    outputString += ` name="${input.name}"`;
-  } else {
-    // TODO: Thow error if no name
+
+    // Builds a string to return
+    let outputString = `<input type="${input.type}" name="${input.name}"`;
+
+    if(input.value) {
+      outputString += ` value="${input.value}"`;
+    }
+
+    outputString += ' />';
+
+    if(input.label) {
+      outputString = `<label>${input.label} ${outputString}</label>`;
+    }
+
+    outputString = `<p>${outputString}</p>`;
+
+    return outputString;
+
   }
 
-  // Add value if exists
-  if(input.value) {
-    outputString += ` value="${input.value}"`;
-  }
+  // TODO: Thow error if no name
 
-  // Add input closing
-  outputString += ' />';
-
-  // Add label if exits
-  if(input.label) {
-    outputString = `<label>${input.label} ${outputString}</label>`;
-  }
-
-  // Wrap in paragraph
-  outputString = `<p>${outputString}</p>`;
-
-  return outputString;
 }
 
 // Dummy data. TODO: remove before production.
@@ -144,6 +179,29 @@ let testFields = [
   {
     type: 'submit',
     value: 'Send Form'
+  },
+  {
+    type: 'label',
+    value: 'Some random label!'
+  },
+  {
+    name: 'colors',
+    type: 'select',
+    label: 'Colors',
+    options: [
+      {
+        value: 'red',
+        label: 'Red'
+      },
+      {
+        value: 'yellow',
+        label: 'Yellow'
+      },
+      {
+        value: 'blue',
+        label: 'Blue'
+      }
+    ]
   }
 ]
 buildForm(testFields);
