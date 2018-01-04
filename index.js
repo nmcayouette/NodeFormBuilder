@@ -7,14 +7,11 @@ let buildForm = (inputs) => {
     // Iterate through each input
     let outputString = inputs.map(inputFactory).join('\n');
 
+    // Output inputs
     console.log(outputString);
-
   } else {
-
-    // TODO: Throw invalid inputs argument
-
+    error('You must supply a valid array of inputs.', inputs); // Custom error method included
   }
-
 }
 
 // Factory for building different input types
@@ -47,13 +44,9 @@ let inputFactory = (input) => {
       default:
         return buildInput(input);
     }
-
-  } else {
-
-    // TODO: Throw invalid input type exception
-
   }
 
+  error('You must supply a valid input type.', input.type);
 }
 
 // Builds a select element
@@ -76,11 +69,9 @@ let buildSelect = (input) => {
     outputString = `<p>${outputString}</p>`;
 
     return outputString;
-
   }
 
-  // TODO: Thow error if no name
-
+  error('The select inputs require a name string and options array.', [input.name, input.options]);
 }
 
 // Builds an option element
@@ -91,7 +82,7 @@ let buildOption = (option) => {
     return `<option value="${option.value}">${option.label}</option>`;
   }
 
-  // TODO: Thow error if no value or label
+  error('The option elements require a value string and label string.', [option.value, option.label]);
 }
 
 // Builds a label element
@@ -102,7 +93,7 @@ let buildLabel = (input) => {
     return `<p><label>${input.value}</label></p>`;
   }
 
-  // TODO: Thow error if no value
+  error('The label inputs require a value string.', input.value);
 }
 
 // Builds an input button element
@@ -113,7 +104,7 @@ let buildInputButton = (input) => {
     return `<input type="${input.type}" value="${input.value}" />`;
   }
 
-  // TODO: Thow error if no value
+  error(`The ${input.type} inputs require a value string`, input.value);
 }
 
 // Builds an input element
@@ -136,11 +127,15 @@ let buildInput = (input) => {
     }
 
     return outputString;
-
   }
 
-  // TODO: Thow error if no name
+  error(`The ${input.type} inputs require a value string`, input.value);
 
+}
+
+// Error messages
+let error = (message, value) => {
+  throw new Error(`FormBuilder - ${message}\nValue:\n${value}`);
 }
 
 // Dummy data. TODO: remove before production.
