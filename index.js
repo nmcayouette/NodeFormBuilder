@@ -5,7 +5,7 @@ let buildForm = (inputs) => {
   if(inputs && Array.isArray(inputs)) {
 
     // Iterate through each input
-    let outputString = inputs.map(inputFactory).join('');
+    let outputString = inputs.map(inputFactory).join('\n');
 
     console.log(outputString);
 
@@ -110,7 +110,7 @@ let buildInputButton = (input) => {
 
   // Check if value or throw exception
   if(input.value) {
-    return `<p><input type="${input.type}" value="${input.value}" /></p>`;
+    return `<input type="${input.type}" value="${input.value}" />`;
   }
 
   // TODO: Thow error if no value
@@ -134,8 +134,6 @@ let buildInput = (input) => {
     if(input.label) {
       outputString = `<label>${input.label} ${outputString}</label>`;
     }
-
-    outputString = `<p>${outputString}</p>`;
 
     return outputString;
 
