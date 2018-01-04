@@ -1,13 +1,30 @@
 # NodeFormBuilder
 A quick and basic way to generate dynamic forms in HTML with Node.
-Currently only provides basic support for 'text', 'email', 'password', 'hidden', 'select', 'label', 'reset', and 'submit', elements.
+Currently only provides basic support for 'text', 'email', 'password', 'hidden', 'select', 'label', 'reset', and 'submit', elements, and renders the html string to the console.
 
 ## Usage
++ Ensure you have Node installed and clone this repo.
++ In your project, be sure to import FormBuilder. `let FormBuilder = require('./FormBuilder.js');`
++ Use the buildForm method outlined below to create your form.
 
-TODO: Insert install instructions
+### Example
+
+```javascript
+
+  let FormBuilder = require('./FormBuilder.js');
+
+  let inputs = [
+    { name: 'name', type: 'text', label: 'Name' },
+    { name: 'email', type: 'email', label: 'Email' },
+    { name: 'password', type: 'password', label: 'Password' },
+    { name: 'csrf', type: 'hidden', value: 'wgPbQMS_fJL@RO6ZTwc-nmS1$1a7R9L(' },
+    { type: 'submit', value: 'Send Form' }
+  ];
+  FormBuilder.buildForm(inputs, 'example.com', 'POST');
+```
 
 ### Creating a form
-A form can be created by using the `buildForm({inputs}, [action, method])`
+A form can be created by using the `FormBuilder.buildForm({inputs}, [action, method])`
 function. This method supports 3 arguments:
 + **{inputs}** - Required array of input objects, see the below section
 for what is needed for each input.
